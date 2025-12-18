@@ -48,3 +48,7 @@ This dashboard is designed for:
 - Supply Chain Managers
 - Operations Teams
 - Business Analysts supporting logistics and inventory planning
+
+## Data Availability
+The raw dataset is not included in this repository due to data size and confidentiality considerations. 
+This project focuses on data modeling, KPI design, and business insights using Power BI.
