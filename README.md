@@ -17,12 +17,16 @@ Using Power BI, this project delivers:
 ---
 
 ## Dataset
-- Source file: `Supply Chain & Sales Datasets.xlsx`
 - Grain: 1 row per **Retail Order ID** (order-level transaction)
 - Key fields:
   - Commercial: Sales, Profit, Cost, Discount, Quantity, Unit CP, Unit SP
   - Supply chain: Ship Mode, **Days (Actual delivery days)**, Returned (Yes/No)
   - Dimensions: Customer (Segment), Product (Category/Sub-category), Geography (Region/State/City)
+
+### Data Availability
+The raw dataset is not included in this repository, as it is used for educational purposes and the redistribution rights are unclear.
+
+This repository focuses on data modeling, DAX measures, dashboard design, and analytical insights derived from the dataset.
 
 ---
 
