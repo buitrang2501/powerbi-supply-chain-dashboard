@@ -1,17 +1,9 @@
-Total Orders =
-DISTINCTCOUNT('fact_retail_order'[Retail Order ID])
+Total Orders = DISTINCTCOUNT('fact_retail_order'[Retail Order ID])
+Total Revenue = SUM('fact_retail_order'[Sales])
+Total Profit = SUM('fact_retail_order'[Profit])
+Profit Margin = DIVIDE([Total Profit], [Total Revenue])
 
-Total Revenue =
-SUM('fact_retail_order'[Sales])
-
-Total Profit =
-SUM('fact_retail_order'[Profit])
-
-Profit Margin =
-DIVIDE([Total Profit], [Total Revenue])
-
-Avg Delivery Time (Days) =
-AVERAGE('fact_retail_order'[Days])
+Avg Delivery Time (Days) = AVERAGE('fact_retail_order'[Days])
 
 Returned Orders =
 CALCULATE(
@@ -19,15 +11,5 @@ CALCULATE(
     'fact_retail_order'[Returned] = "Yes"
 )
 
-Return Rate =
-DIVIDE([Returned Orders], [Total Orders])
-
-Non-return Rate =
-1 - [Return Rate]
-
-Revenue MoM % =
-VAR PrevMonth =
-    CALCULATE([Total Revenue], DATEADD('dim_calendar'[Date], -1, MONTH))
-RETURN
-    DIVIDE([Total Revenue] - PrevMonth, PrevMonth)
-
+Return Rate = DIVIDE([Returned Orders], [Total Orders])
+Non-return Rate = 1 - [Return Rate]
