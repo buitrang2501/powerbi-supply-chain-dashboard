@@ -24,3 +24,10 @@ DIVIDE([Returned Orders], [Total Orders])
 
 Non-return Rate =
 1 - [Return Rate]
+
+Revenue MoM % =
+VAR PrevMonth =
+    CALCULATE([Total Revenue], DATEADD('dim_calendar'[Date], -1, MONTH))
+RETURN
+    DIVIDE([Total Revenue] - PrevMonth, PrevMonth)
+
