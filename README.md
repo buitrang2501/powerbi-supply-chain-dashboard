@@ -1,93 +1,152 @@
-# Supply Chain Analysis Dashboard (Power BI)
+# Supply Chain & Sales Performance Dashboard (Power BI)
 
 ## 1. Business Context
-Retail supply chain operations require continuous monitoring of delivery performance, return behavior, shipping efficiency, and regional logistics effectiveness to reduce delays, minimize operational costs, and improve customer satisfaction.
+Understanding supply chain operations and sales performance is critical for retail businesses to optimize logistics efficiency, reduce delivery delays, manage product returns, and improve profitability.
 
-This project analyzes end-to-end supply chain operations for a retail business using real-world transactional data. An interactive Power BI dashboard was developed to support real-time monitoring and data-driven operational decision-making.
-
----
-
-## 2. Dataset
-- Retail supply chain transactional data including:
-  - Order transactions
-  - Products and product hierarchy (category, sub-category)
-  - Customers and customer segments
-  - Shipping modes and return status
-  - Geographic information (city, state, region)
-  - Sales and logistics attributes
-- Time period: [e.g. 2022–2024]
-- Data size: multi-table dataset with order-level transactional records
+This project analyzes order-level transactional data (orders, customers, products, regions, shipping modes, delivery time, returns) and delivers an interactive Power BI dashboard to support both operational monitoring and revenue optimization.  
+(Current repo already includes a star-schema approach and KPI-focused dashboarding; this version formalizes the dataset context, analytical questions, and decision recommendations.) 
 
 ---
 
-## 2.1 Data Preparation
-The original dataset was provided as a single denormalized transactional table containing order, customer, product, logistics, geographic, and sales attributes.
-
-Data preparation involved cleaning and standardizing the data, including handling missing values, correcting inconsistencies, and removing duplicate records. The dataset was then transformed into a dimensional model by defining the appropriate analytical grain and separating fact and dimension tables to ensure data consistency, reliable KPI calculation, and scalable analysis in Power BI.
-
----
-
-## 3. Data Modeling
-- Dimensional modeling using a star schema design
-- Central fact table:
-  - Retail order transactions capturing order-level metrics such as sales, cost, discount, profit, delivery duration, and return status
-- Supporting dimension tables:
-  - Date (calendar)
-  - Product (including category and sub-category)
-  - Customer and customer segment
-  - Address (city, state, region)
-  - Sales people
-  - Ship mode
-  - Return status
-- DAX measures implemented to calculate operational and logistics performance KPIs
+## 2. Objectives & Requirements
+Using Power BI, this project aims to:
+- Analyze **revenue, profit, and sales performance** over time and across regions.
+- Identify **drivers of delivery time** and **product return rate**.
+- Build interactive dashboards to monitor **supply chain efficiency**.
+- Provide **actionable recommendations** to optimize operations and increase revenue.
 
 ---
 
-## 4. Key KPIs
-The dashboard focuses on core supply chain and logistics performance indicators, including:
+## 3. Dataset
+**File**: `Supply Chain & Sales Datasets.xlsx`  
+**Grain**: 1 row per *Retail Order ID* (order-level transaction).  
+**Columns**: 29 fields covering Orders, Customers, Geography, Products, Sales, Profitability, Returns, and Delivery Days.
+
+### 3.1 Key Fields (high level)
+- Order timing: `Order Date`, `Ship Date`
+- Logistics: `Ship Mode`, `Days` (actual delivery days)
+- Return: `Returned` (Yes/No)
+- Sales & profitability: `Sales`, `Profit`, `Cost`, `Discount`, `Quantity`, `Unit CP`, `Unit SP`
+- Dimensions: Customer (Segment), Product (Category/Sub-Category), Geography (Region/State/City)
+
+> Note: If the dataset cannot be committed due to licensing or file size constraints, place it under `/data` locally and use the refresh instructions in `/docs`.
+
+---
+
+## 4. Business Questions (Analysis Scope)
+1) What is the average delivery time, and which region has the slowest deliveries?  
+2) How does delivery time impact profitability?  
+3) Which region has the highest return rate?  
+4) Which product has the highest return rate, and what are the likely causes?  
+5) What are the revenue & profit trends over time (Year/Quarter/Month)?  
+6) Which top 5 regions have the highest/lowest revenue?  
+7) Which products have the highest/lowest sales?  
+8) Which customer segment contributes the most to total revenue?  
+9) How does seasonality impact sales (peak vs low periods)?  
+10) Forecast next quarter’s revenue based on historical trend.
+
+---
+
+## 5. Data Preparation (Power Query)
+Main steps:
+- Standardize date fields and data types.
+- Handle missing/invalid values (especially `Days`, `Profit`, `Discount`).
+- Remove duplicates using `Retail Order ID` / `Order ID` rules.
+- Create a dedicated `DimDate` to enable robust time intelligence.
+
+Deliverables are documented in `/docs`:
+- `Data_Dictionary.md`
+- `KPI_Definitions.md`
+- `Model_Design.md`
+- `Refresh_Instructions.md`
+
+---
+
+## 6. Data Model (Star Schema)
+### 6.1 Proposed Model
+- **FactOrders** (order-level metrics): Sales, Profit, Cost, Discount, Quantity, Days, Returned
+- **DimDate**: calendar attributes for time intelligence
+- **DimCustomer**: Customer ID, Segment, Customer Name
+- **DimProduct**: Product ID, Category, Sub-Category, Product Name
+- **DimGeo**: Region, State, City, Country, Postal Code (+ optional Lat/Long)
+- **DimShipMode**: Ship Mode
+- **DimSalesPeople**: Retail Sales People
+
+> Model diagram screenshot should be placed at: `/assets/data_model.png`
+
+---
+
+## 7. KPI Framework (Core Measures)
 - Total Orders
-- Revenue & Profit Impact
+- Total Sales (Revenue)
+- Total Profit
 - Profit Margin
-- Return / Cancellation Rate
-- Average Delivery Time
-- Shipping Mode Efficiency
-- Regional Logistics Performance
-- Order Volume & Margin Trends
+- Avg Delivery Days
+- Return Rate
+- Discount Rate
+- Shipping Mode Efficiency (Delivery Days & Margin by Ship Mode)
+
+KPI definitions + calculation logic are documented in: `/docs/KPI_Definitions.md`.
 
 ---
 
-## 5. Dashboard Preview
-![Dashboard Overview](assets/dashboard_overview.png)
+## 8. Dashboard Pages (Recommended Structure)
+1) **Executive Overview**  
+   - Revenue, Profit, Margin, Orders, Return Rate, Avg Delivery Days (with YoY/MoM)
+2) **Delivery Performance**  
+   - Delivery days by Region/Ship Mode, outlier detection, delay hotspots
+3) **Returns & Profitability**  
+   - Return rate by Region/Product, relationship between Delivery Days ↔ Return ↔ Margin
+4) **Product & Customer Insights**  
+   - Best/worst products, segment contribution, discount vs margin trade-off
+5) **Forecast**  
+   - Next quarter revenue forecast and confidence band (Power BI forecast)
 
 ---
 
-## 6. Key Insights
-- Delivery delays are concentrated in specific regions, indicating regional logistics bottlenecks that may require improvements in routing or fulfillment processes.
-- Certain product categories exhibit higher return rates, suggesting potential issues related to product quality, packaging, or customer expectation management.
-- Shipping mode selection has a measurable impact on both delivery time and profit margin, highlighting opportunities to balance cost and service level.
-- Order volume and profit margin show clear monthly and seasonal patterns, supporting the need for proactive capacity and inventory planning.
-- Regional differences in logistics performance reveal opportunities to standardize best practices and optimize supply chain operations.
+## 9. Key Insights (Example Narrative)
+- Delivery delays are concentrated in specific regions, indicating logistics bottlenecks and potential routing/fulfillment constraints.
+- Longer delivery time correlates with reduced profit margin and increased return probability, suggesting service-level impacts customer behavior and cost.
+- Certain categories show elevated return rates, implying quality/packaging/expectation misalignment.
+- Revenue and profit exhibit seasonality, enabling proactive inventory and capacity planning.
+
+> Replace these bullets with findings from your final dashboard screenshots.
 
 ---
 
-## 7. Tools & Skills Applied
-- Power BI
-- DAX
-- Dimensional Data Modeling (Fact & Dimension)
-- Supply Chain & Logistics Analytics
-- Data Cleaning and Data Preparation
-- Data Visualization and Dashboard Design
+## 10. Recommendations (Decision-Oriented)
+### Short-term (0–3 months)
+- Prioritize faster ship modes for high-margin products in delay-prone regions.
+- Implement exception monitoring: alert on regions/products where Return Rate > baseline + threshold.
+
+### Mid-term (3–6 months)
+- Review SLA performance for underperforming regions and optimize fulfillment allocation.
+- Improve packaging/quality checks for high-return categories.
+
+### Data Enhancements (Next Iteration)
+- Add carrier-level performance, warehouse capacity, and fulfillment lead-time to deepen root-cause analysis.
 
 ---
 
-## 8. Use Case
-This dashboard is designed for:
-- Supply Chain and Operations Managers
-- Logistics and Fulfillment Teams
-- Business and Data Analysts supporting operational performance monitoring
+## 11. Repository Structure
+- `/powerbi` : PBIX file(s) or template + screenshots
+- `/assets`  : dashboard preview images + data model diagram
+- `/docs`    : data dictionary, KPI definitions, modeling notes, refresh guide
+- `/data`    : dataset file (optional, if allowed)
 
 ---
 
-## Data Availability
-The raw dataset is not included in this repository due to data size and confidentiality considerations.  
-This project focuses on data cleaning, data modeling, KPI design, analytical insights, and dashboard development using Power BI.
+## 12. Tools & Skills
+- Power BI (DAX, Power Query)
+- Dimensional Modeling (Fact/Dimension, Star Schema)
+- Supply Chain & Sales Analytics
+- Dashboard Storytelling (Insights → Recommendations)
+
+---
+
+## 13. Dashboard Preview
+Add key screenshots below:
+- Overview page: `/assets/dashboard_overview.png`
+- Delivery page: `/assets/dashboard_delivery.png`
+- Returns page: `/assets/dashboard_returns.png`
+- Forecast page: `/assets/dashboard_forecast.png`
