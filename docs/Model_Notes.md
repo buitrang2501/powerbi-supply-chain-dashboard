@@ -1,4 +1,4 @@
-# Model Notes (Short)
+# Model Notes
 
 ## Why this model structure?
 This project uses a fact-centered (star-like) model built for interactive BI reporting at **order level** (1 row per Retail Order ID).  
