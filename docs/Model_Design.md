@@ -1,19 +1,14 @@
-# Data Model Design (Star Schema)
+# Model Design
+
+## Grain
+- 1 row per Retail Order ID (order-level)
 
 ## Fact
-FactOrders
-- Keys: Retail Order ID (or Order ID), Product ID, Customer ID, Date Key(s), Region Key, Ship Mode Key
-- Measures: Sales, Profit, Cost, Discount, Quantity, Days, Returned
-
-## Dimensions
-DimDate
-DimCustomer (Customer ID, Name, Segment)
-DimProduct (Product ID, Category, Sub-Category, Product Name)
-DimGeo (Region, State, City, Country, Postal Code, Lat/Long)
-DimShipMode (Ship Mode)
-DimSalesPeople (Retail Sales People)
+fact_retail_order:
+- measures: Sales, Profit, Cost, Discount, Quantity, Days, Returned
+- keys: Date, Customer, Product, Address/Geo, Ship Mode, Sales Rep
 
 ## Notes
-- Create DimDate from Order Date (and optionally Ship Date).
-- Use single-direction relationships from dimensions → fact for stable measures.
-- Confirm grain: one row per Retail Order ID.
+- Single direction filters from dimensions → fact
+- dim_calendar marked as Date table
+- Prefer star schema (avoid snowflake unless required)
