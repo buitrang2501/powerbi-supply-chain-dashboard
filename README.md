@@ -1,152 +1,135 @@
 # Supply Chain & Sales Performance Dashboard (Power BI)
 
-## 1. Business Context
-Understanding supply chain operations and sales performance is critical for retail businesses to optimize logistics efficiency, reduce delivery delays, manage product returns, and improve profitability.
+## Business Context
+Retail businesses must balance revenue growth with supply chain efficiency. Delivery delays and high return rates directly reduce profitability through reverse logistics costs, lost margin, and customer churn risk.
 
-This project analyzes order-level transactional data (orders, customers, products, regions, shipping modes, delivery time, returns) and delivers an interactive Power BI dashboard to support both operational monitoring and revenue optimization.  
-(Current repo already includes a star-schema approach and KPI-focused dashboarding; this version formalizes the dataset context, analytical questions, and decision recommendations.) 
-
----
-
-## 2. Objectives & Requirements
-Using Power BI, this project aims to:
-- Analyze **revenue, profit, and sales performance** over time and across regions.
-- Identify **drivers of delivery time** and **product return rate**.
-- Build interactive dashboards to monitor **supply chain efficiency**.
-- Provide **actionable recommendations** to optimize operations and increase revenue.
+This project analyzes order-level retail data (2014–2017) to evaluate revenue and profit performance alongside delivery speed (Actual delivery days) and returns. The outcome is an interactive Power BI dashboard designed for executive monitoring and operational drill-down.
 
 ---
 
-## 3. Dataset
-**File**: `Supply Chain & Sales Datasets.xlsx`  
-**Grain**: 1 row per *Retail Order ID* (order-level transaction).  
-**Columns**: 29 fields covering Orders, Customers, Geography, Products, Sales, Profitability, Returns, and Delivery Days.
-
-### 3.1 Key Fields (high level)
-- Order timing: `Order Date`, `Ship Date`
-- Logistics: `Ship Mode`, `Days` (actual delivery days)
-- Return: `Returned` (Yes/No)
-- Sales & profitability: `Sales`, `Profit`, `Cost`, `Discount`, `Quantity`, `Unit CP`, `Unit SP`
-- Dimensions: Customer (Segment), Product (Category/Sub-Category), Geography (Region/State/City)
-
-> Note: If the dataset cannot be committed due to licensing or file size constraints, place it under `/data` locally and use the refresh instructions in `/docs`.
+## Objectives
+Using Power BI, this project delivers:
+- Sales & profitability analysis over time and across regions/products/customer segments.
+- Delivery performance monitoring using **Actual delivery days**.
+- Return-rate analysis to identify high-risk regions/products.
+- Decision-oriented insights and recommendations to reduce returns and improve margin.
 
 ---
 
-## 4. Business Questions (Analysis Scope)
-1) What is the average delivery time, and which region has the slowest deliveries?  
-2) How does delivery time impact profitability?  
-3) Which region has the highest return rate?  
-4) Which product has the highest return rate, and what are the likely causes?  
-5) What are the revenue & profit trends over time (Year/Quarter/Month)?  
-6) Which top 5 regions have the highest/lowest revenue?  
-7) Which products have the highest/lowest sales?  
-8) Which customer segment contributes the most to total revenue?  
-9) How does seasonality impact sales (peak vs low periods)?  
-10) Forecast next quarter’s revenue based on historical trend.
+## Dataset
+- Source file: `Supply Chain & Sales Datasets.xlsx`
+- Grain: 1 row per **Retail Order ID** (order-level transaction)
+- Key fields:
+  - Commercial: Sales, Profit, Cost, Discount, Quantity, Unit CP, Unit SP
+  - Supply chain: Ship Mode, **Days (Actual delivery days)**, Returned (Yes/No)
+  - Dimensions: Customer (Segment), Product (Category/Sub-category), Geography (Region/State/City)
 
 ---
 
-## 5. Data Preparation (Power Query)
-Main steps:
-- Standardize date fields and data types.
-- Handle missing/invalid values (especially `Days`, `Profit`, `Discount`).
-- Remove duplicates using `Retail Order ID` / `Order ID` rules.
-- Create a dedicated `DimDate` to enable robust time intelligence.
+## Data Model (Star Schema)
+Fact table:
+- **fact_retail_order**: Sales, Profit, Cost, Discount, Quantity, Days, Returned, keys to dimensions
 
-Deliverables are documented in `/docs`:
-- `Data_Dictionary.md`
-- `KPI_Definitions.md`
-- `Model_Design.md`
-- `Refresh_Instructions.md`
+Dimensions:
+- dim_calendar (Date)
+- dim_customer (+ Segment)
+- dim_product (+ Category, Sub-category)
+- dim_address (Region/State/City/Postal Code)
+- dim_ship_mode
+- dim_retail_sales_people (Sales Rep)
 
----
-
-## 6. Data Model (Star Schema)
-### 6.1 Proposed Model
-- **FactOrders** (order-level metrics): Sales, Profit, Cost, Discount, Quantity, Days, Returned
-- **DimDate**: calendar attributes for time intelligence
-- **DimCustomer**: Customer ID, Segment, Customer Name
-- **DimProduct**: Product ID, Category, Sub-Category, Product Name
-- **DimGeo**: Region, State, City, Country, Postal Code (+ optional Lat/Long)
-- **DimShipMode**: Ship Mode
-- **DimSalesPeople**: Retail Sales People
-
-> Model diagram screenshot should be placed at: `/assets/data_model.png`
+> Model diagram: `/assets/data_model.png`
 
 ---
 
-## 7. KPI Framework (Core Measures)
-- Total Orders
-- Total Sales (Revenue)
-- Total Profit
-- Profit Margin
-- Avg Delivery Days
-- Return Rate
-- Discount Rate
-- Shipping Mode Efficiency (Delivery Days & Margin by Ship Mode)
+## KPI Definitions (Core)
+- Total Orders = distinct count of Retail Order ID
+- Revenue = sum of Sales
+- Profit = sum of Profit
+- Profit Margin = Profit / Revenue
+- Avg Delivery Time (Days) = average of Days
+- Returned Orders = count of orders where Returned = Yes
+- **Return Rate = Returned Orders / Total Orders**
+- Non-return Rate = 1 - Return Rate
 
-KPI definitions + calculation logic are documented in: `/docs/KPI_Definitions.md`.
-
----
-
-## 8. Dashboard Pages (Recommended Structure)
-1) **Executive Overview**  
-   - Revenue, Profit, Margin, Orders, Return Rate, Avg Delivery Days (with YoY/MoM)
-2) **Delivery Performance**  
-   - Delivery days by Region/Ship Mode, outlier detection, delay hotspots
-3) **Returns & Profitability**  
-   - Return rate by Region/Product, relationship between Delivery Days ↔ Return ↔ Margin
-4) **Product & Customer Insights**  
-   - Best/worst products, segment contribution, discount vs margin trade-off
-5) **Forecast**  
-   - Next quarter revenue forecast and confidence band (Power BI forecast)
+> Full KPI logic: `/docs/KPI_Definitions.md` and `/docs/Key_DAX_Measures.md`
 
 ---
 
-## 9. Key Insights (Example Narrative)
-- Delivery delays are concentrated in specific regions, indicating logistics bottlenecks and potential routing/fulfillment constraints.
-- Longer delivery time correlates with reduced profit margin and increased return probability, suggesting service-level impacts customer behavior and cost.
-- Certain categories show elevated return rates, implying quality/packaging/expectation misalignment.
-- Revenue and profit exhibit seasonality, enabling proactive inventory and capacity planning.
+## Dashboard Pages
+1) **Overview**
+   - Revenue, Profit, Profit Margin, Return Rate, Total Orders
+   - Revenue mix by customer segment & region
+   - Monthly performance table with MoM signals
 
-> Replace these bullets with findings from your final dashboard screenshots.
+2) **Product**
+   - Category & sub-category contribution
+   - Pareto analysis (80/20) to prioritize operational focus
+   - Profit vs Cost & margin risk by category
 
----
+3) **Customer**
+   - Customer base size, revenue per customer, orders per customer
+   - Customer retention cohort view (repeat behavior)
+   - Segment contribution and purchase distribution
 
-## 10. Recommendations (Decision-Oriented)
-### Short-term (0–3 months)
-- Prioritize faster ship modes for high-margin products in delay-prone regions.
-- Implement exception monitoring: alert on regions/products where Return Rate > baseline + threshold.
+4) **Sales Representative**
+   - Revenue contribution and trend by sales rep
+   - Performance breakdown with QoQ / YTD metrics
 
-### Mid-term (3–6 months)
-- Review SLA performance for underperforming regions and optimize fulfillment allocation.
-- Improve packaging/quality checks for high-return categories.
+5) **Region**
+   - Regional revenue trend and product mix
+   - Geo distribution (state-level)
+   - Return rate and delivery time view by region
 
-### Data Enhancements (Next Iteration)
-- Add carrier-level performance, warehouse capacity, and fulfillment lead-time to deepen root-cause analysis.
-
----
-
-## 11. Repository Structure
-- `/powerbi` : PBIX file(s) or template + screenshots
-- `/assets`  : dashboard preview images + data model diagram
-- `/docs`    : data dictionary, KPI definitions, modeling notes, refresh guide
-- `/data`    : dataset file (optional, if allowed)
+6) **Tooltips**
+   - Drill-down tooltips for product/customer/region to support exploratory analysis
 
 ---
 
-## 12. Tools & Skills
-- Power BI (DAX, Power Query)
-- Dimensional Modeling (Fact/Dimension, Star Schema)
-- Supply Chain & Sales Analytics
-- Dashboard Storytelling (Insights → Recommendations)
+## Results Snapshot (from dashboard)
+Period: 02/01/2014 – 30/12/2017
+- Orders: 5,009
+- Revenue: 2.297M
+- Profit: 286.4K
+- Profit Margin: 12.47%
+- **Return Rate: 15.97%**
+- Customers: 793 (Avg revenue/customer: 2.90K)
+- Revenue mix by segment: Consumer 50.56%, Corporate 30.74%, Home Office 18.7%
+- Revenue by region: West 33.29% (highest), South 17.5% (lowest)
+- Margin risk: Furniture margin ~2.49% vs Technology/Office Supplies ~17%
 
 ---
 
-## 13. Dashboard Preview
-Add key screenshots below:
-- Overview page: `/assets/dashboard_overview.png`
-- Delivery page: `/assets/dashboard_delivery.png`
-- Returns page: `/assets/dashboard_returns.png`
-- Forecast page: `/assets/dashboard_forecast.png`
+## Key Insights
+1) **Return rate is material (15.97%)**, representing a meaningful profitability risk across the business.
+2) **Delivery time is a likely driver of returns and margin**: prolonged delivery increases return probability and reduces effective margin due to reverse logistics and lost sales.
+3) **Furniture shows a high-revenue but low-margin profile** (margin ~2.49%), suggesting discount/cost/return issues that require targeted controls.
+4) **Revenue is concentrated in West (33.29%)**, so improving delivery speed and reducing returns in this region yields outsized impact.
+
+---
+
+## Recommendations
+Short-term (0–3 months)
+- Deploy exception monitoring: flag products/regions where Return Rate > baseline + threshold.
+- Prioritize delivery improvement for high-revenue clusters (e.g., West) and high-risk categories (e.g., Furniture sub-categories).
+- Introduce a “Return Watchlist” (Top N products by Return Rate × Revenue).
+
+Mid-term (3–6 months)
+- Review pricing/discount governance for low-margin categories; reassess discount strategy where margin erosion is persistent.
+- Improve packaging/quality checks for sub-categories with elevated returns.
+
+Next data enhancements
+- Add carrier/warehouse-level data to validate root causes for delivery delays and returns.
+
+---
+
+## Repository Structure
+- `/powerbi` : PBIX (or link in Releases) + screenshots
+- `/assets`  : dashboard images + data model diagram
+- `/docs`    : KPI definitions, DAX measures, model notes, refresh guide
+- `/data`    : dataset (optional if permitted)
+
+---
+
+## Tools
+Power BI (DAX, Power Query), Dimensional Modeling, Supply Chain Analytics
