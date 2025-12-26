@@ -65,4 +65,33 @@ While the model supports the current report effectively, the following are plann
 - Consider consolidating `dim_category` and `dim_sub-category` into `dim_product` so product hierarchy is contained in a single dimension table.
 - Consider consolidating `dim_customer_segment` into `dim_customer` if segment is a simple attribute.
 
-**Benefit:** fewe
+**Benefit:** fewer relationships, simpler field selection, reduced ambiguity risk.
+
+### (B) Ensure “Region” is consistently sourced
+- Region should ideally come from a single geography dimension (e.g., `dim_address`) to avoid confusion or filter path issues.
+- Sales representative tables should be joined by Sales Rep key rather than by Region.
+
+### (C) Return status as a field vs. dimension
+- If only Yes/No is available, `Returned` can remain as a column in the fact table (simplest).
+- A return dimension is optional and mainly for semantic clarity.
+
+---
+
+## 6) Safe migration plan (non-breaking approach)
+Model refactoring can affect visuals and measures. To avoid breaking the report, any schema change should be done using a staged migration:
+
+1. Save a new version (e.g., `SupplyChain_v2.pbix`)
+2. Create new consolidated dimensions (e.g., `dim_product_v2`) in parallel
+3. Add relationships in parallel (keep old tables temporarily)
+4. Update visuals gradually to use the new dimensions
+5. Validate totals & KPI consistency (Orders/Revenue/Profit/Return Rate)
+6. Hide or remove legacy tables only after full validation
+
+---
+
+## 7) Notes for reviewers
+This project focuses on **decision-support reporting**: the dashboard is designed to help identify:
+- Regional revenue concentration and risk hotspots
+- Return-rate drivers by product and region
+- The relationship between delivery speed (Days) and profitability outcomes
+- Product prioritization using Pareto analysis and cohort-style customer behavior views
