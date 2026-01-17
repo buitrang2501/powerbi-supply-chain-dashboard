@@ -218,4 +218,3 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 
 ---
 
-## 12) Repository Structure
