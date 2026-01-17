@@ -225,7 +225,7 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 ├── assets/       # Screenshots + model diagram used in README
 ├── docs/         # DAX, KPI definitions, refresh notes
 └── README.md     # Project overview & insights
-
+```
 ---
 
 ## 13) Tools & Skills Demonstrated
