@@ -217,8 +217,9 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 - required Power BI settings
 
 ---
-
 ## 12) Repository Structure
+
+```text
 .
 ├── powerbi/      # PBIX/PBIT report files
 ├── assets/       # Screenshots + model diagram used in README
