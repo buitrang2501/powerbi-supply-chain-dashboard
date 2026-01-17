@@ -218,3 +218,40 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 
 ---
 
+## 12) Repository Structure
+.
+├─ powerbi/
+│ ├─ SupplyChain_Dashboard.pbix
+│ └─ SupplyChain_Dashboard.pbit (optional)
+├─ assets/
+│ ├─ page_overview.png
+│ ├─ page_product.png
+│ ├─ page_customer.png
+│ ├─ page_sales_rep.png
+│ ├─ page_region.png
+│ ├─ tooltip_return_driver.png
+│ ├─ forecast_revenue.png
+│ └─ data_model.png
+├─ docs/
+│ ├─ KPI_Definitions.md
+│ ├─ Key_DAX_Measures.md
+│ ├─ Data_Model_Notes.md
+│ └─ Refresh_Guide.md
+└─ README.md
+
+---
+
+## 13) Tools & Skills Demonstrated
+- Power BI (DAX, Power Query)
+- Dimensional modeling (Star Schema)
+- KPI design + executive dashboard storytelling
+- Root-cause style tooltips & drill-down analysis
+- Time series trend + forecasting (ETS)
+- Supply chain & sales analytics
+
+---
+
+## Author
+**Bui Trang**  
+Data Analyst | Power BI | Supply Chain Analytics  
+
