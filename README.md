@@ -220,24 +220,10 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 
 ## 12) Repository Structure
 .
-├─ powerbi/
-│ ├─ SupplyChain_Dashboard.pbix
-│ └─ SupplyChain_Dashboard.pbit (optional)
-├─ assets/
-│ ├─ page_overview.png
-│ ├─ page_product.png
-│ ├─ page_customer.png
-│ ├─ page_sales_rep.png
-│ ├─ page_region.png
-│ ├─ tooltip_return_driver.png
-│ ├─ forecast_revenue.png
-│ └─ data_model.png
-├─ docs/
-│ ├─ KPI_Definitions.md
-│ ├─ Key_DAX_Measures.md
-│ ├─ Data_Model_Notes.md
-│ └─ Refresh_Guide.md
-└─ README.md
+├── powerbi/      # PBIX/PBIT report files
+├── assets/       # Screenshots + model diagram used in README
+├── docs/         # DAX, KPI definitions, refresh notes
+└── README.md     # Project overview & insights
 
 ---
 
