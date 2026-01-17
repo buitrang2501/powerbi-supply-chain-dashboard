@@ -1,7 +1,3 @@
-
----
-
-```md
 # docs/Data_Model_Notes.md
 
 ## Purpose
