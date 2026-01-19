@@ -48,6 +48,7 @@ M_icon_profit_mom :=
        result
 ```
 -- Icon Revenue MOM
+```
 M_icon_revenue_mom :=
     
     VAR positive = UNICHAR(9650)
@@ -58,20 +59,23 @@ M_icon_revenue_mom :=
     VAR result = icon & " " & FORMAT(change_mom, "0.0%")
     
     RETURN result
-
+```    
 -- Profit
+```
 M_profit :=
     [M_revenue]-[M_cost]
-
+```
 -- Profit Margin
 -- Format: 0.00%;-0.00%;0.00%
+```
 M_profit margin :=
     [M_profit]/[M_revenue]
-
+```
 -- Profit Accmulating
+```
 M_profit_accmulating :=
     CALCULATE([M_profit],dim_calendar[Date] <= MAX(dim_calendar[Date]))
-
+```
 -- Profit Current
 M_profit_current :=
     
