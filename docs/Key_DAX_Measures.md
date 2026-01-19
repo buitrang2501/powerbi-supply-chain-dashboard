@@ -115,63 +115,89 @@ M_revenue_YTD :=
 TOTALYTD ( [M_revenue], dim_calendar[Date] )
 
 ```
-### Profit Margin
+### Revenue QTD
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+M_revenue_QTD :=
+TOTALQTD ( [M_revenue], dim_calendar[Date] )
 
 ```
-### Profit Margin
+### Revenue QoQ (change vs previous quarter)
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+M_revenue_prev_qtr :=
+CALCULATE ( [M_revenue], PREVIOUSQUARTER ( dim_calendar[Date] ) )
+
+M_revenue_QoQ :=
+DIVIDE ( [M_revenue] - [M_revenue_prev_qtr], [M_revenue_prev_qtr] )
 
 ```
-### Profit Margin
+### Revenue MoM (this month vs last month)
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+M_revenue_prev_month :=
+CALCULATE ( [M_revenue], PREVIOUSMONTH ( dim_calendar[Date] ) )
+
+M_revenue_MoM :=
+DIVIDE ( [M_revenue] - [M_revenue_prev_month], [M_revenue_prev_month] )
 
 ```
-### Profit Margin
+
+---
+
+## 5) Pareto (for sub-category revenue prioritization)
+
+### Pareto (for sub-category revenue prioritization)
+Idea: rank sub-categories by revenue, calculate cumulative revenue / total revenue.
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+Pareto % :=
+VAR CurrentRevenue = [M_revenue]
+VAR TotalRevenue =
+    CALCULATE ( [M_revenue], ALLSELECTED ( dim_sub_category[Sub-Category] ) )
+VAR RevenueRank =
+    RANKX (
+        ALLSELECTED ( dim_sub_category[Sub-Category] ),
+        [M_revenue],
+        ,
+        DESC,
+        Dense
+    )
+VAR CumRevenue =
+    CALCULATE (
+        [M_revenue],
+        FILTER (
+            ALLSELECTED ( dim_sub_category[Sub-Category] ),
+            RANKX (
+                ALLSELECTED ( dim_sub_category[Sub-Category] ),
+                [M_revenue],
+                ,
+                DESC,
+                Dense
+            ) <= RevenueRank
+        )
+    )
+RETURN
+DIVIDE ( CumRevenue, TotalRevenue )
 
 ```
-### Profit Margin
+### Pareto CF (cumulative revenue)
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+Pareto CF :=
+[Pareto %]
 
 ```
-### Profit Margin
-```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
 
-```
-### Profit Margin
-```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+---
 
-```
-### Profit Margin
+## 6) KPI Icons
+### M_icon_revenue_mom
 ```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
-
-```
-### Profit Margin
-```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
-
-```
-### Profit Margin
-```DAX
-M_profit_margin :=
-DIVIDE ( [M_profit], [M_revenue] )
+M_icon_revenue_mom :=
+VAR v = [M_revenue_MoM]
+RETURN
+SWITCH (
+    TRUE(),
+    ISBLANK(v), BLANK(),
+    v > 0, "▲",
+    v < 0, "▼",
+    "●"
+)
 
 ```
