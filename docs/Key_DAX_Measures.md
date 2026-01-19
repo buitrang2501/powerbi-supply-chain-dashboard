@@ -9,16 +9,18 @@ Notes:
 
 ---
 
-```DAX
 -- ------------------------------------------------------------
 -- SECTION: Sales & Profitability
 -- ------------------------------------------------------------
 
 -- Cost
+
+```DAX
 M_cost :=
     SUMX(fact_retail_order,fact_retail_order[Quantity]*fact_retail_order[Unit CP])
-
+```
 -- Icon Profit Margin MOM
+```
 M_icon_profit_margin_mom :=
     
     VAR positive = UNICHAR(9650)
@@ -30,8 +32,9 @@ M_icon_profit_margin_mom :=
     
     RETURN
        result
-
+```
 -- Icon Profit MOM
+```
 M_icon_profit_mom :=
     
     VAR positive = UNICHAR(9650)
@@ -43,7 +46,7 @@ M_icon_profit_mom :=
     
     RETURN
        result
-
+```
 -- Icon Revenue MOM
 M_icon_revenue_mom :=
     
