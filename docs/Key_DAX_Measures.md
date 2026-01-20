@@ -2,7 +2,6 @@
 
 This document lists the key DAX measures used in the Power BI report. It is generated from a DAX Studio export so you can review logic, reuse measures, and keep KPI definitions consistent across visuals.
 
-_Generated: 2026-01-20 04:16_
 
 ## Notes
 
