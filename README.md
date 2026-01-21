@@ -104,14 +104,14 @@ Executive view of:
 - Pareto analysis (80/20) for revenue concentration
 - Return rate by Sub-category (scrollable ranking)
 
-📌 Screenshot: `assets/page_product.png`
+📌 Screenshot: [page_product](assets/page_product.png)
 
 ### 7.3 Customer
 - Total customers, avg revenue/orders/products per customer
 - Segment breakdown
 - Customer retention (cohort by FirstPurchaseDate)
 
-📌 Screenshot: `assets/page_customer.png`
+📌 Screenshot: [page_customer](assets/page_customer.png)
 
 ### 7.4 Sales Representative
 - Sales trend by rep (time series)
@@ -119,7 +119,7 @@ Executive view of:
 - Order volume vs return rate by rep (compare reps quickly)
 - Performance table (QTD, QoQ, YTD, etc.)
 
-📌 Screenshot: `assets/page_sales_rep.png`
+📌 Screenshot: [page_sales_rep](assets/page_sales_rep.png)
 
 ### 7.5 Region
 - Returned rate & avg delivery days by region
@@ -127,7 +127,7 @@ Executive view of:
 - State-level geo distribution
 - Regional performance drill-down table (Region → City)
 
-📌 Screenshot: `assets/page_region.png`
+📌 Screenshot: [page_region](assets/page_region.png)
 
 ### 7.6 Drill-through Tooltips (Root-cause style)
 Dedicated tooltip page to explain drivers of return-rate for the current filter context:
@@ -139,13 +139,13 @@ Dedicated tooltip page to explain drivers of return-rate for the current filter 
 **Overall removes ONLY the Sales Rep filter** (all other slicers remain applied: Date/Region/Category/Ship mode...).  
 This avoids misleading baselines and makes “Rep vs Overall” comparable.
 
-📌 Tooltip screenshot: `assets/tooltip_return_driver.png`
+📌 Tooltip screenshot: [tooltip_return_driver](assets/tooltip_return_driver.png)
 
 ### 7.7 Forecast Revenue
 - Built-in forecasting (ETS) with confidence interval
 - Useful for planning inventory/supply chain capacity
 
-📌 Screenshot: `assets/forecast_revenue.png`
+📌 Screenshot: [forecast_revenue](assets/forecast_revenue.png)
 
 ---
 
@@ -223,7 +223,7 @@ If they cancel or cannot locate the file path, Power BI may show a blank/empty r
 .
 ├── powerbi/      # PBIX/PBIT report files
 ├── assets/       # Screenshots + model diagram used in README
-├── docs/         # DAX, KPI definitions, refresh notes
+├── docs/         # DAX, KPI definitions, refresh guides
 └── README.md     # Project overview & insights
 ```
 ---
