@@ -70,8 +70,8 @@ This repository focuses on **data modeling, Power Query steps, DAX measures, das
 - **Non-return Rate** = 1 - Return Rate
 
 📌 DAX documentation:  
-- `docs/KPI_Definitions.md`  
-- `docs/Key_DAX_Measures.md`
+- [KPI_Definitions](docs/KPI_Definitions.md)  
+- [Key_DAX_Measures](docs/Key_DAX_Measures.md)`
 
 ---
 
@@ -97,7 +97,7 @@ Executive view of:
 - Delivery days vs profit margin (relationship)
 - Monthly performance table + MoM indicators
 
-📌 Screenshot: `assets/page_overview.png`
+📌 Screenshot: [page_overview](assets/page_overview.png)
 
 ### 7.2 Product
 - Cost vs Profit by Category (margin risk)
