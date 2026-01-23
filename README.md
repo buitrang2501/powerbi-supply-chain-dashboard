@@ -1,244 +1,96 @@
 # Supply Chain & Sales Performance Dashboard (Power BI)
 
-Interactive Power BI dashboard for **Supply Chain & Sales** analysis (2014–2017), focusing on **Revenue/Profit**, **Delivery Performance**, **Return Rate**, and **Customer behavior** to support operational decisions.
+Interactive Power BI dashboard analyzing **sales performance** and **supply chain efficiency** (delivery speed + returns) using an order-level retail dataset.
+
+> **Portfolio note:** This repository focuses on **data modeling (star schema)**, **Power Query ETL**, **DAX measures**, and **dashboard storytelling** for executive and operational decision-making.
 
 ---
 
-## 1) Business Context
-Retail businesses must balance **revenue growth** with **supply chain efficiency**. Delivery delays and product returns can reduce profitability through:
-- higher reverse-logistics cost,
-- margin erosion,
-- customer churn risk.
+## Business Context
+Retail teams must balance revenue growth with supply chain reliability. **Delivery delays** and **high return rates** can reduce profitability through reverse-logistics costs, margin erosion, and customer churn risk.
 
-This project analyzes **order-level** retail data to uncover:
-- what drives **delivery days** and **returns**,
-- where profit is concentrated (or at risk),
-- how customer/segment/region/product contribute to performance.
+This project provides a unified view of:
+- **Revenue & profit trends** over time
+- **Regional / product / segment performance**
+- **Delivery-time patterns** (Actual delivery days)
+- **Return-rate hotspots** by region and product
 
 ---
 
-## 2) Project Objectives
-Using Power BI, this project delivers:
-
-- **Sales & profitability** analysis over time (year/quarter/month) and across **regions / products / customer segments**  
-- **Delivery performance** monitoring using *Actual delivery days* and delivery buckets  
-- **Return-rate analysis** to identify high-risk **regions / products / customer segments / sales reps**  
-- **Forecasting** next period revenue using Power BI built-in forecasting (ETS)  
-- Actionable **business recommendations** for optimizing operations & improving profitability
-
----
-
-## 3) Dataset
-**Grain:** 1 row per *Retail Order ID* (order-level transaction)
-
-**Key fields**
-- Commercial: `Sales`, `Profit`, `Cost`, `Discount`, `Quantity`, `Unit CP`, `Unit SP`
-- Supply chain: `Ship Mode`, `Days (Actual delivery days)`, `Returned (Yes/No)`
-- Dimensions: Customer (`Segment`), Product (`Category/Sub-category`), Geography (`Region/State/City`), Sales Rep
-
-> **Data availability**  
-The raw dataset is not included in this repository (educational dataset; redistribution rights unclear).  
-This repository focuses on **data modeling, Power Query steps, DAX measures, dashboard design, and insights**.
+## Objectives
+Using Power BI, the report enables:
+- Monitor **revenue, profit, margin** across time and geography
+- Identify **slow-delivery regions** and **high-return clusters**
+- Explore performance by **product category/sub-category** and **customer segment**
+- Support actions to **reduce returns**, **improve delivery SLAs**, and **protect margin**
+- Forecast short-term revenue (Power BI **ETS** built-in forecasting)
 
 ---
 
-## 4) Data Model (Star Schema)
-**Fact table**
-- `fact_retail_order`: Sales, Profit, Cost, Discount, Quantity, Days, Returned + keys
+## Dataset (Source & Attribution)
+- Dataset is provided publicly by the original challenge source: **Mazhoc Data**.
+- Download page: https://mazhocdata.tv/
 
-**Dimensions**
-- `dim_calendar` (Date)
-- `dim_customer` (+ Segment)
-- `dim_product` (+ Category, Sub-category)
-- `dim_address` (Region/State/City/Postal Code)
-- `dim_ship_mode`
-- `dim_retail_sales_people` (Sales Rep)
-- `dim_return` (Returned status)
-
-📌 Model diagram: `assets/data_model.png`
+**Important:** This repo does **not** redistribute the Excel dataset. Instead, it provides the Power BI report + documentation and links to the official source.
 
 ---
 
-## 5) KPI Definitions (Core)
-- **Total Orders** = DISTINCTCOUNT(`Retail Order ID`)
-- **Revenue** = SUM(`Sales`)
-- **Profit** = SUM(`Profit`)
-- **Profit Margin** = Profit / Revenue
-- **Avg Delivery Days** = AVERAGE(`Days`)
-- **Returned Orders** = COUNT orders where Returned = "Yes"
-- **Return Rate** = Returned Orders / Total Orders
-- **Non-return Rate** = 1 - Return Rate
+## What’s Inside the Report
+### Pages
+- **Overview:** KPIs (Revenue, Profit, Margin, Orders, Return Rate) + trend + top contributors  
+- **Product:** Category / Sub-category performance, Pareto focus, margin risk  
+- **Customer:** Segment mix, customer contribution & repeat behavior indicators  
+- **Sales Rep:** Performance tracking by retail sales people  
+- **Region:** Geo performance, delivery days and return-rate comparison  
+- **Tooltips:** Drill-down tooltips to explain “why” behind return rate / delivery issues
 
-📌 DAX documentation:  
-- [KPI_Definitions](docs/KPI_Definitions.md)  
-- [Key_DAX_Measures](docs/Key_DAX_Measures.md)`
+### Highlights (Insights You Can Draw)
+- Returns are concentrated in specific **regions** and **sub-categories** → prioritize root-cause analysis and action plans
+- Longer delivery days can be investigated as a potential driver of **higher return risk**
+- Some categories may show **high revenue but thin margins** → pricing/discount/returns governance opportunities
+- Revenue is often concentrated in a small set of regions/products → operational improvements there yield outsized impact
 
----
-
-## 6) Analytical Questions (per requirement)
-1. Average delivery time? Which region has slowest deliveries?
-2. How does delivery time impact profitability?
-3. Which region has the highest return rate?
-4. Which product has the highest return rate & key causes?
-5. Revenue and profit trends over time (year/quarter/month)?
-6. Top 5 regions highest/lowest revenue?
-7. Products highest/lowest sales?
-8. Which customer segment contributes most to total revenue?
-9. Seasonality: peak vs low sales periods?
-10. Forecast next quarter revenue?
+> Exact values depend on filters/period selection and refresh.
 
 ---
 
-## 7) Dashboard Pages (What’s inside)
-### 7.1 Overview
-Executive view of:
-- Total Orders, Revenue, Profit, Profit Margin, Return Rate
-- Revenue mix by segment & region
-- Delivery days vs profit margin (relationship)
-- Monthly performance table + MoM indicators
-
-📌 Screenshot: [page_overview](assets/page_overview.png)
-
-### 7.2 Product
-- Cost vs Profit by Category (margin risk)
-- Pareto analysis (80/20) for revenue concentration
-- Return rate by Sub-category (scrollable ranking)
-
-📌 Screenshot: [page_product](assets/page_product.png)
-
-### 7.3 Customer
-- Total customers, avg revenue/orders/products per customer
-- Segment breakdown
-- Customer retention (cohort by FirstPurchaseDate)
-
-📌 Screenshot: [page_customer](assets/page_customer.png)
-
-### 7.4 Sales Representative
-- Sales trend by rep (time series)
-- Revenue & profit margin by rep
-- Order volume vs return rate by rep (compare reps quickly)
-- Performance table (QTD, QoQ, YTD, etc.)
-
-📌 Screenshot: [page_sales_rep](assets/page_sales_rep.png)
-
-### 7.5 Region
-- Returned rate & avg delivery days by region
-- Revenue contribution by product category per region
-- State-level geo distribution
-- Regional performance drill-down table (Region → City)
-
-📌 Screenshot: [page_region](assets/page_region.png)
-
-### 7.6 Drill-through Tooltips (Root-cause style)
-Dedicated tooltip page to explain drivers of return-rate for the current filter context:
-- Return rate Δ vs Overall
-- Breakdown by Sub-category
-- Breakdown by Region / Customer segment / Delivery-days bucket
-
-✅ **Definition of “Overall” in tooltip**  
-**Overall removes ONLY the Sales Rep filter** (all other slicers remain applied: Date/Region/Category/Ship mode...).  
-This avoids misleading baselines and makes “Rep vs Overall” comparable.
-
-📌 Tooltip screenshot: [tooltip_return_driver](assets/tooltip_return_driver.png)
-
-### 7.7 Forecast Revenue
-- Built-in forecasting (ETS) with confidence interval
-- Useful for planning inventory/supply chain capacity
-
-📌 Screenshot: [forecast_revenue](assets/forecast_revenue.png)
-
----
-
-## 8) Results Snapshot (from dashboard)
-**Period:** 2014-02-01 → 2017-12-30  
-- **Total Orders:** 5.01K  
-- **Revenue:** 2.30M  
-- **Profit:** 286.40K  
-- **Profit Margin:** 12.47%  
-- **Return Rate (overall):** 5.91%  
-- **Total Customers:** 793  
-
-(Values reflect dashboard filters = All)
-
----
-
-## 9) Key Insights (Story you can present in portfolio)
-1) **Returns are not evenly distributed**  
-Return rate varies by **sub-category** and **customer segment**, implying operational issues are concentrated (not “random noise”).
-
-2) **Delivery time has a non-linear relationship with returns**  
-Returns can spike at specific delivery windows (e.g., certain buckets) rather than monotonically increasing — suggesting service expectations, product type, and customer segment interact.
-
-3) **Margin risk exists despite healthy overall margin**  
-Some categories can be high revenue but lower margin, making them more sensitive to discounting and returns. Prioritizing those areas yields outsized ROI.
-
-4) **Region-level volume ≠ return risk**  
-High-volume regions may not always have the highest return rate. The dashboard helps separate:
-- **where the business is big** (impact),
-- vs **where the business is leaking margin** (risk).
-
-5) **Sales Rep performance should be evaluated with a fair baseline**  
-Using “Overall excluding Sales Rep filter” provides a clean comparison to avoid misinterpretation due to different product mixes or regions.
-
----
-
-## 10) Recommendations
-### Short-term (0–3 months)
-- Implement a **Return Watchlist**: Top sub-categories by `Return Rate × Revenue`
-- Set alert thresholds: return rate > overall baseline + configurable parameter
-- Prioritize operational checks for high-return sub-categories (packaging, product expectation mismatch, QA)
-
-### Mid-term (3–6 months)
-- Review pricing/discount policy in categories where margin is fragile
-- Improve delivery reliability for segments/buckets correlated with higher return risk
-- Add a “reason for return” field (if available) to validate root causes
-
-### Next data enhancements
-- Carrier/warehouse data, shipment events (actual vs planned), damage codes
-- Return reason + product condition + refund/exchange outcome
-- Customer lifetime value to quantify churn risk
-
----
-
-## 11) How to Run the Report (Important)
-### Option A — PBIX (recommended)
-1. Download the dataset Excel file (as instructed by the challenge)
-2. Open `powerbi/SupplyChain_Dashboard.pbix`
-3. Update data source path (if prompted)
+## How to Open / Refresh
+This repo publishes **PBIX** (not PBIT). To open and refresh:
+1. Download the dataset Excel file from Mazhoc Data (link above)
+2. Open: `powerbi/SupplyChain_Dashboard.pbix`
+3. If prompted, update the Excel path (see **docs/Refresh_Guide.md**)
 4. Refresh
 
-### Option B — PBIT (template)
-If you publish a `.pbit` template, viewers **must connect to the dataset** when opening it.  
-If they cancel or cannot locate the file path, Power BI may show a blank/empty report because queries fail to load.
-
-📌 Suggested: include `docs/Refresh_Guide.md` with screenshots:
-- where to update the Excel path
-- how to refresh
-- required Power BI settings
+📌 Detailed step-by-step guide: **docs/Refresh_Guide.md**
 
 ---
-## 12) Repository Structure
 
+## Repository Structure
 ```text
 .
-├── powerbi/      # PBIX/PBIT report files
-├── assets/       # Screenshots + model diagram used in README
-├── docs/         # DAX, KPI definitions, refresh guides
-└── README.md     # Project overview & insights
+├─ powerbi/            # Power BI report file(s)
+├─ assets/             # Screenshots, model diagram used in README
+└─ docs/               # DAX, KPI definitions, refresh notes, data dictionary
 ```
+
+Recommended docs:
+- `docs/Key_DAX_Measures.md`
+- `docs/KPI_Definitions.md`
+- `docs/Data_Dictionary.md`
+- `docs/Refresh_Guide.md`
+
 ---
 
-## 13) Tools & Skills Demonstrated
-- Power BI (DAX, Power Query)
-- Dimensional modeling (Star Schema)
+## Tools & Skills Demonstrated
+- Power BI Desktop (Power Query, DAX)
+- Star schema modeling (fact/dim)
 - KPI design + executive dashboard storytelling
-- Root-cause style tooltips & drill-down analysis
-- Time series trend + forecasting (ETS)
+- Drill-down tooltips & exploratory analysis
+- Time-series trend & forecasting (ETS)
 - Supply chain & sales analytics
 
 ---
 
-## Author
-**Bui Trang**  
-Data Analyst | Power BI | Supply Chain Analytics  
-
+## License / Use
+This project is shared for portfolio and learning purposes.  
+Dataset copyright remains with the original publisher (Mazhoc Data / challenge owner).
