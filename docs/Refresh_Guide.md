@@ -1,160 +1,86 @@
-# Refresh Guide (Power BI Template)
+# Refresh Guide (Power BI PBIX)
 
-This repository provides a **Power BI template (.pbit)** for a supply chain & sales performance dashboard.  
-To protect data privacy and respect dataset redistribution rights, **no raw data is included** in this repo.
-
-Use this guide to connect the template to **your own dataset** and refresh the model safely.
+This guide helps viewers open the PBIX report and refresh it with the **original Excel dataset** from the challenge source.
 
 ---
 
-## What you need
+## 1) Prerequisites
+- Install **Power BI Desktop** (latest stable version recommended)
+- Download the challenge dataset Excel file from:
+  - https://mazhocdata.tv/
 
-- **Power BI Desktop** (latest recommended)
-- A dataset that follows the same schema as the template (see the required fields below)
-- The template file: `powerbi/SupplyChain_Dashboard.pbit` (or your file name)
-
----
-
-## Step 1 — Open the template
-
-1. Download the `.pbit` file from the `powerbi/` folder.
-2. Open it with **Power BI Desktop**.
-3. A **Parameters** window may appear (depending on how the template was packaged).
-
-> Note: If the report opens with empty visuals, that is expected until you connect a data source and refresh.
+> This repository does not redistribute the dataset. You must download the Excel file from the official source.
 
 ---
 
-## Step 2 — Update data source (Power Query)
-
-### Where is Power Query?
-In Power BI Desktop:
-- **Home** → **Transform data** → **Transform data**
-
-This opens **Power Query Editor**.
-
-### Update the source safely
-In Power Query Editor:
-1. In the left panel (**Queries**), select the main query (e.g., `Orders`, `SupplyChain`, or similar).
-2. In the ribbon: **Home** → **Data source settings**
-3. Select the current source → **Change Source…**
-4. Point to your new source:
-   - Excel / CSV / Folder / Database, etc.
-
-Then:
-- **Close & Apply** (top-left) to load data into the model.
-
-✅ Best practice: Use a **parameter** (e.g., `pDataPath`) for file paths so you only update the path once.
+## 2) Open the Report
+1. Download / clone this repo
+2. Open Power BI file:
+   - `powerbi/SupplyChain_Dashboard.pbix`
 
 ---
 
-## Step 3 — Refresh the report
+## 3) Fix the Dataset Path (Most Common Step)
+When you first open the PBIX on a new machine, Power BI may not find the Excel file path.
 
-After applying changes:
-- Power BI Desktop → **Home** → **Refresh**
+### Option A — Change data source (recommended)
+1. In Power BI Desktop: **File → Options and settings → Data source settings**
+2. Select the Excel source (workbook path)
+3. Click **Change Source…**
+4. Browse to your downloaded Excel file
+5. Click **OK**
 
-If refresh fails, review:
-- Column names match
-- Data types match (Date, numeric fields)
-- Relationships are intact (Model view)
-
----
-
-## Step 4 — Validate the model (quick checks)
-
-Go to **Model view** and confirm:
-- Fact table is connected to dimensions (Date / Product / Customer / Geography / Sales Rep / Ship Mode)
-- Relationship keys are not broken (no missing IDs)
-
-Go to **Report view** and verify:
-- KPI cards show values
-- Time-series charts render
-- Filters/slicers respond correctly
+### Option B — If you see “Apply changes” prompts
+- Click **Apply changes**
+- Then click **Refresh** on the Home ribbon
 
 ---
 
-## Required fields (minimum schema)
-
-Your dataset should include fields equivalent to the following:
-
-**Order & logistics**
-- Retail Order ID (unique)
-- Order ID
-- Order Date
-- Ship Date
-- Ship Mode
-- Days (Actual delivery days)
-- Returned (Yes/No)
-
-**Customer**
-- Customer ID
-- Customer Name
-- Segment
-
-**Geography**
-- Country
-- City
-- State/Province
-- Region
-- Postal Code (optional)
-- Latitude / Longitude (optional, for maps)
-
-**Product**
-- Product ID
-- Category
-- Sub-Category
-- Product Name
-
-**Commercial**
-- Sales
-- Profit
-- Cost
-- Discount
-- Quantity
-- Unit CP / Unit SP (optional)
-
-**Sales Rep**
-- Retail Sales People (Sales Rep)
+## 4) Refresh the Model
+1. Go to **Home → Refresh**
+2. Wait until the refresh completes
+3. Verify visuals load (no “error” on cards/charts)
 
 ---
 
-## Troubleshooting
+## 5) Troubleshooting
 
-### A) The report opens blank / visuals show (Blank)
-This usually means:
-- No data source is connected yet, or
-- Refresh hasn’t been run
+### A) Report opens but visuals are blank
+Common causes:
+- Dataset path not updated correctly
+- Refresh was cancelled
+- Dataset structure changed or sheet/table names don’t match
 
 Fix:
-1. Update source in **Power Query**
-2. **Close & Apply**
-3. **Refresh**
+- Re-check **Data source settings** and refresh again
 
-### B) “Could not find file …” / path errors
-Fix:
-- **Transform data** → **Data source settings** → **Change Source**
-- Avoid hard-coded local paths in M code
-- Use a parameter (`pDataPath`) whenever possible
+### B) “Cannot find column / field” errors
+Possible causes:
+- Dataset file version differs from what the report expects
+- Column names in the Excel file were renamed
 
-### C) Relationships broken / slicers not working
 Fix:
-- Check key columns exist and are the same data type
-- Ensure Date fields are proper Date type
-- Recreate relationships in **Model view** if needed
+1. Open **Transform data** (Power Query)
+2. Check the first query that reads the Excel workbook
+3. Verify the selected sheet/table name and promoted headers
+4. Update column references where needed
+5. **Close & Apply**, then refresh
 
-### D) Map visual not working
-Fix:
-- Ensure Region/State/City are valid geographic labels
-- If Latitude/Longitude available, set data categories:
-  - Latitude → Latitude
-  - Longitude → Longitude
+### C) Performance is slow during refresh
+- Keep only necessary tables “loaded”
+- Avoid duplicate `Excel.Workbook(...)` steps in multiple queries
+- Prefer a staging query (read Excel once) and create *Reference* queries for dim/fact
 
 ---
 
-## Privacy & redistribution note
+## 6) What to Expect After Refresh
+- All visuals and slicers become interactive
+- KPIs (Revenue/Profit/Margin/Return Rate/Delivery Days) update based on filters
+- Forecast visuals depend on the historical period and seasonality
 
-- This repository **does not contain raw data**.
-- The `.pbit` template contains **report layout, data model structure, and DAX measures** only.
-- Replace the source with your own dataset following the same schema.
+---
 
-If you plan to publish the report publicly, remove any customer-identifiable fields or apply masking/anonymization where appropriate.
+## 7) Notes
+If you adapt the dataset (new columns, extra sheets), update:
+- `docs/Data_Dictionary.md`
+- `docs/Key_DAX_Measures.md` (if DAX changes)
