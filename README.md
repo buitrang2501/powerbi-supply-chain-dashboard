@@ -162,7 +162,7 @@ This avoids misleading baselines and makes “Rep vs Overall” comparable.
 
 ---
 
-## 9) Key Insights (Story you can present in portfolio)
+## 9) Key Insights
 1) **Returns are not evenly distributed**  
 Return rate varies by **sub-category** and **customer segment**, implying operational issues are concentrated (not “random noise”).
 
