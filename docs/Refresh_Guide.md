@@ -52,8 +52,3 @@ Best practices:
 - avoid duplicate `Excel.Workbook(...)` reads in multiple queries
 - use a **staging query** (read Excel once) and create *Reference* queries for dim/fact
 
-## 4) Notes
-
-If you adapt the dataset (new columns/sheets), update:
-- `docs/Data_Dictionary.md`
-- `docs/Key_DAX_Measures.md` (if DAX changes)
