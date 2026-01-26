@@ -1,99 +1,62 @@
-# docs/KPI_Definitions.md
+# KPI Definitions
 
-## Purpose
-This document defines core KPIs used across the Power BI report.  
-All KPIs are calculated at **order level** (grain = 1 row per `Retail Order ID`) unless stated otherwise.
+This document defines the core KPIs used across the Power BI report and how to interpret them.
 
----
+## Data Grain
 
-## Data Grain & Conventions
-- **Grain:** 1 row per `Retail Order ID` in `fact_retail_order`
-- **Return definition:** An order is considered returned when `dim_return[Returned] = "Yes"` (or equivalent).
-- **Delivery days:** `fact_retail_order[Days]` = actual delivery time in days.
-- **Revenue/Profit:** taken directly from fact table fields (`Sales`, `Profit`) after applying report filters.
-
----
+- **Fact table grain:** *order line / transaction* (1 row per `Retail Order ID` in `fact_retail_order`).
+- **Order-level KPIs:** calculated using **distinct `Order ID`** (because one `Order ID` can contain multiple line items).
+- **Return definition:** an order is considered returned when `Returned = "Yes"` for that order context (see `dim_return`).
 
 ## Core KPIs (Executive Cards)
 
-### 1) Total Orders
-**Meaning:** Number of distinct retail orders in the current filter context.  
-**Formula:** DistinctCount(`Retail Order ID`)  
-**Use cases:** order volume trend, denominator for return rate.
+### Total Orders
+**Meaning:** Number of distinct customer orders in the current filter context.  
+**Formula (order-level):** `DISTINCTCOUNT(fact_retail_order[Order ID])`
 
-### 2) Revenue
+### Total Line Items
+**Meaning:** Number of distinct order lines / transactions.  
+**Formula (line-level):** `DISTINCTCOUNT(fact_retail_order[Retail Order ID])`
+
+### Revenue
 **Meaning:** Total sales value (top-line).  
-**Formula:** Sum(`Sales`)  
-**Use cases:** trend analysis, regional/product performance.
+**Formula:** `SUM(fact_retail_order[Sales])`
 
-### 3) Profit
+### Profit
 **Meaning:** Total profit value.  
-**Formula:** Sum(`Profit`)
+**Formula:** `SUM(fact_retail_order[Profit])` *(or a derived measure if your model uses cost-based profit)*
 
-### 4) Profit Margin
+### Profit Margin
 **Meaning:** Profitability ratio.  
-**Formula:** `Profit / Revenue`  
-**Note:** Use `DIVIDE()` to avoid divide-by-zero errors.
+**Formula:** `DIVIDE([Profit], [Revenue])`
 
-### 5) Avg Delivery Days
-**Meaning:** Average delivery time across orders in the current context.  
-**Formula:** Average(`Days`)  
-**Interpretation:** Higher values may indicate slower logistics / higher fulfillment risk.
-
----
+### Avg Delivery Days
+**Meaning:** Average delivery time across line items in the current context.  
+**Formula:** `AVERAGE(fact_retail_order[Days])`  
+**Interpretation:** Higher values may indicate slower fulfillment risk.
 
 ## Return KPIs (Quality & Reverse Logistics)
 
-### 6) Returned Orders
+### Returned Orders
 **Meaning:** Number of orders that were returned.  
-**Formula:** DistinctCount(`Retail Order ID`) where Returned = "Yes"
+**Formula (order-level):** `DISTINCTCOUNT(fact_retail_order[Order ID])` filtered where `Returned = "Yes"`.
 
-### 7) Return Rate
+### Return Rate
 **Meaning:** Percentage of orders returned.  
-**Formula:** `Returned Orders / Total Orders`  
-**Interpretation:** A key cost driver (reverse logistics, lost margin, customer dissatisfaction).
+**Formula:** `DIVIDE([Returned Orders], [Total Orders])`
 
-### 8) Non-return Rate
+### Non-return Rate
 **Meaning:** Percentage of orders not returned.  
-**Formula:** `1 - Return Rate`
-
----
+**Formula:** `1 - [Return Rate]`
 
 ## “Overall” Reference (Benchmark Line)
-In several charts/tooltips, you plot a benchmark line labeled **Overall**.
 
-### Definition
-**Overall** removes **Sales Rep** filter only, while keeping all other report filters (Date/Region/Category/Ship mode/Segment…).
+In several visuals/tooltips, a benchmark line labeled **Overall** is used for comparison.
 
-### Why this matters
-When drilling into Sales Rep, you want to compare:
+**Definition:** **Overall** removes the **Sales Rep** filter only, while keeping all other report filters (Date/Region/Product/Ship mode/Segment…).
+
+**Why it matters:** When drilling into a Sales Rep, you want to compare:
 - **Return rate (Rep)** vs
-- **Return rate (Overall)** (same context except Sales Rep)
+- **Return rate (Overall)** *(same context except Sales Rep)*
 
 This helps distinguish “rep effect” from “product/logistics/region effect”.
-
----
-
-## Time Intelligence (Trends)
-
-### 9) Revenue / Profit (YTD, QTD, QoQ, MoM)
-- **YTD / QTD:** Standard cumulative metrics to show progress within year/quarter.
-- **MoM / QoQ change:** Used for KPI cards (this month vs last month, this quarter vs last quarter).
-
----
-
-## Driver Views (Root-cause style tooltips)
-These visuals are used to investigate drivers behind return rate / delivery time:
-
-- Return rate by **Sub-category**
-- Return rate by **Ship mode**
-- Return rate by **Delivery days bucket**
-- Return rate by **Region**
-- Return rate by **Customer segment**
-
-**Best practice interpretation:**  
-Always check both:
-1) Return rate (risk) AND  
-2) Order volume / revenue (impact)
-
-High return rate but tiny volume may be less urgent than moderate return rate with huge volume.
