@@ -1,115 +1,81 @@
 # Data Dictionary
 
 This document describes:
-1) The **raw dataset fields** (Excel file from the challenge source)  
-2) The **modeled star schema tables** used in the Power BI report (dim/fact)
-
----
+1) the **raw dataset fields** (Excel file from the challenge source), and  
+2) the **modeled tables** used in the Power BI report (fact/dim schema).
 
 ## 1) Raw Dataset Fields (Excel)
 
-> Grain: one row per order line / transaction (as provided by the challenge dataset)
+**Grain:** one row per **order line / transaction** (as provided by the challenge dataset).
 
 ### Identifiers
-- **Retail Order ID**: Unique retail order identifier  
-- **Order ID**: General order identifier  
+- **Retail Order ID**: unique order-line identifier *(one row per line item)*  
+- **Order ID**: general order identifier *(may repeat across multiple line items)*
 
 ### Dates
-- **Order Date**: Date the order was placed  
-- **Ship Date**: Date the order was shipped  
+- **Order Date**: date the order was placed  
+- **Ship Date**: date the order was shipped
 
 ### Shipping / Logistics
-- **Ship Mode**: Shipping method (Standard, Express, Same-Day)  
-- **Days**: Actual delivery days (delivery lead time)  
+- **Ship Mode**: shipping method (Standard, Express, Same-Day)  
+- **Days**: actual delivery days (lead time)
 
 ### Customer
-- **Customer ID**: Unique customer identifier  
-- **Customer Name**: Full customer name  
-- **Segment**: Customer segment (Consumer, Corporate, Home Office)  
-- **Postal Code**: Postal / Zip code  
-- **Country**: Country  
-- **City**: City  
-- **State**: State / Province  
-- **Region**: Sales region  
+- **Customer ID**, **Customer Name**
+- **Segment**: Consumer / Corporate / Home Office
+- **Postal Code**, **City**, **State**, **Region**, **Country**
 
 ### Geography (Coordinates)
-- **Latitude**: Latitude  
-- **Longitude**: Longitude  
+- **Latitude**, **Longitude**
 
 ### Product
-- **Product ID**: Unique product identifier  
-- **Category**: Product category  
-- **Sub-Category**: Product sub-category  
-- **Product Name**: Product name  
+- **Product ID**, **Product Name**
+- **Category**, **Sub-Category**
 
 ### Sales / Finance
-- **Sales**: Revenue generated from the order  
-- **Quantity**: Units sold  
-- **Discount**: Discount rate or amount (depends on dataset definition)  
-- **Profit**: Profit from the order  
-- **Cost**: Original cost of the order  
-- **Unit CP**: Unit cost price  
-- **Unit SP**: Unit selling price  
+- **Sales**, **Quantity**, **Discount**
+- **Profit**, **Cost**
+- **Unit CP** (cost price), **Unit SP** (selling price)
 
 ### Returns
-- **Returned**: Return status (Yes/No)
+- **Returned**: Yes/No
 
 ### Sales People
-- **Retail Sales People**: Sales representative / assigned retail salesperson
+- **Retail Sales People**: assigned sales representative
 
----
+## 2) Power BI Model Tables (Fact/Dim)
 
-## 2) Star Schema Tables (Power BI Model)
-
-> The model is organized to support fast slicing by time, product, customer, and geography.
+> The model is designed for fast slicing by **time, product, customer, geography, ship mode, and sales rep**.
 
 ### Fact Table
-**fact_retail_order** (transaction grain)
-- Keys (typical): DateKey / ProductKey / CustomerKey / AddressKey / ShipModeKey / SalesPeopleKey / ReturnKey
-- Measures (typical columns): Sales, Profit, Cost, Quantity, Discount, Days (delivery days)
-- Flags: Returned (or ReturnKey mapping)
 
-### Dimension Tables
-**dim_calendar**
-- Date, Year, Quarter, Month, MonthName, YearMonth (and other time attributes)
+**fact_retail_order** *(order-line grain)*  
+- Typical numeric columns: `Sales`, `Profit`, `Cost`, `Quantity`, `Discount`, `Days`  
+- Typical business keys: `Retail Order ID`, `Order ID`, `Order Date`, `Ship Date`  
+- Links to dimensions via business keys (or surrogate keys if you created them in Power Query)
 
-**dim_product**
-- Product ID, Product Name
-- Links to category/sub-category dims (if separated)
+### Dimension Tables (examples)
 
-**dim_category**
-- Category
+- **dim_calendar**: Date, Year, Quarter, Month, YearMonth
+- **dim_product**: Product ID, Product Name  
+  - optionally snowflaked into: **dim_category**, **dim_sub_category**
+- **dim_customer** / **dim_customer_segment**: Customer + Segment
+- **dim_address**: Region, State, City, Postal Code, Country (+ Latitude/Longitude if kept here)
+- **dim_ship_mode**: Ship Mode
+- **dim_return**: Returned status (Yes/No)
+- **dim_retail_sales_people**: Sales Rep
 
-**dim_sub-category**
-- Sub-Category
+## 3) Derived Columns (Created in Power Query / DAX)
 
-**dim_customer_segment**
-- Segment (Consumer, Corporate, Home Office)
+Depending on your implementation, common derived fields include:
 
-**dim_address**
-- Region, State, City, Postal Code, Country
-- Latitude, Longitude (if kept at this level)
+- **YearMonth**: for monthly trending
+- **Delivery Bucket**: e.g., 0–2, 3–5, 6–8, 9–14, 15+ days
+- **FirstPurchaseMonth / CohortMonth**: for retention cohorts
+- **MonthIndex**: number of months since cohort month
 
-**dim_ship_mode**
-- Ship Mode
+## 4) Notes on IDs / Surrogate Keys
 
-**dim_return**
-- Returned status (Yes/No or Returned/Not Returned)
-
-**dim_retail_sales_people**
-- Retail Sales People
-
----
-
-## 3) Notes on IDs / Surrogate Keys
-Some models add an internal **surrogate key** for dimension tables (e.g., CustomerKey, ProductKey).  
 If you created IDs during Power Query:
-- Keep keys stable (avoid re-numbering after refresh)
-- Prefer deterministic keys where possible (e.g., hash of business key) if dataset changes over time
-
----
-
-## 4) Where This Dictionary Is Used
-- Refresh validation (ensure raw fields exist)
-- Review of the model diagram (assets)
-- Alignment with DAX measures in `docs/Key_DAX_Measures.md`
+- keep keys **stable** (avoid re-numbering after refresh)
+- prefer deterministic keys where possible (e.g., based on business key)
