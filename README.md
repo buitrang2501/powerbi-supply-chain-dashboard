@@ -55,7 +55,7 @@ This repository focuses on **data modeling, Power Query steps, DAX measures, das
 - `dim_retail_sales_people` (Sales Rep)
 - `dim_return` (Returned status)
 
-📌 Model diagram: `assets/data_model.png`
+📌 Model diagram: [data_model](assets/data_model.png)
 
 ---
 
@@ -70,8 +70,8 @@ This repository focuses on **data modeling, Power Query steps, DAX measures, das
 - **Non-return Rate** = 1 - Return Rate
 
 📌 DAX documentation:  
-- `docs/KPI_Definitions.md`  
-- `docs/Key_DAX_Measures.md`
+- [KPI_Definitions](docs/KPI_Definitions.md) 
+- [Key_DAX_Measures](docs/Key_DAX_Measures.md)
 
 ---
 
@@ -97,21 +97,21 @@ Executive view of:
 - Delivery days vs profit margin (relationship)
 - Monthly performance table + MoM indicators
 
-📌 Screenshot: `assets/page_overview.png`
+📌 Screenshot: [page_overview](assets/page_overview.png)
 
 ### 7.2 Product
 - Cost vs Profit by Category (margin risk)
 - Pareto analysis (80/20) for revenue concentration
 - Return rate by Sub-category (scrollable ranking)
 
-📌 Screenshot: `assets/page_product.png`
+📌 Screenshot: [page_product](assets/page_product.png)
 
 ### 7.3 Customer
 - Total customers, avg revenue/orders/products per customer
 - Segment breakdown
 - Customer retention (cohort by FirstPurchaseDate)
 
-📌 Screenshot: `assets/page_customer.png`
+📌 Screenshot: [page_customer](assets/page_customer.png)
 
 ### 7.4 Sales Representative
 - Sales trend by rep (time series)
@@ -119,7 +119,7 @@ Executive view of:
 - Order volume vs return rate by rep (compare reps quickly)
 - Performance table (QTD, QoQ, YTD, etc.)
 
-📌 Screenshot: `assets/page_sales_rep.png`
+📌 Screenshot: [page_sales_rep](assets/page_sales_rep.png)
 
 ### 7.5 Region
 - Returned rate & avg delivery days by region
@@ -127,7 +127,7 @@ Executive view of:
 - State-level geo distribution
 - Regional performance drill-down table (Region → City)
 
-📌 Screenshot: `assets/page_region.png`
+📌 Screenshot: [page_region](assets/page_region.png)
 
 ### 7.6 Drill-through Tooltips (Root-cause style)
 Dedicated tooltip page to explain drivers of return-rate for the current filter context:
@@ -139,13 +139,13 @@ Dedicated tooltip page to explain drivers of return-rate for the current filter 
 **Overall removes ONLY the Sales Rep filter** (all other slicers remain applied: Date/Region/Category/Ship mode...).  
 This avoids misleading baselines and makes “Rep vs Overall” comparable.
 
-📌 Tooltip screenshot: `assets/tooltip_return_driver.png`
+📌 Tooltip screenshot: [tooltip_return_driver](assets/tooltip_return_driver.png)
 
 ### 7.7 Forecast Revenue
 - Built-in forecasting (ETS) with confidence interval
 - Useful for planning inventory/supply chain capacity
 
-📌 Screenshot: `assets/forecast_revenue.png`
+📌 Screenshot: [forecast_revenue](assets/forecast_revenue.png)
 
 ---
 
@@ -202,6 +202,6 @@ Using “Overall excluding Sales Rep filter” provides a clean comparison to av
 
 ## 11) How to Run the Report (Important)
 1. Download the dataset Excel file (as instructed by the challenge)
-2. Open `powerbi/SupplyChain_Dashboard.pbix`
+2. Open [SupplyChain_Dashboard](powerbi/SupplyChain_Dashboard.pbix)
 3. Update data source path (if prompted)
 4. Refresh
