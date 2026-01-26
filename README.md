@@ -139,7 +139,7 @@ Dedicated tooltip page to explain drivers of return-rate for the current filter 
 **Overall removes ONLY the Sales Rep filter** (all other slicers remain applied: Date/Region/Category/Ship mode...).  
 This avoids misleading baselines and makes “Rep vs Overall” comparable.
 
-📌 Tooltip screenshot: [tooltip_return_driver](assets/tooltip_return_driver.png)
+📌 Tooltip screenshot: [tooltip_sales_rep](assets/tooltip_sales_rep.png)
 
 ### 7.7 Forecast Revenue
 - Built-in forecasting (ETS) with confidence interval
