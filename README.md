@@ -200,7 +200,7 @@ Using “Overall excluding Sales Rep filter” provides a clean comparison to av
 
 ---
 
-## 11) How to Run the Report (Important)
+## 11) How to Run the Report
 1. Download the dataset Excel file (as instructed by the challenge)
 2. Open [SupplyChain_Dashboard](powerbi/SupplyChain_Dashboard.pbix)
 3. Update data source path (if prompted)
