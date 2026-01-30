@@ -57,8 +57,6 @@ Although the dataset includes both *Order ID* and *Retail Order ID*, visuals may
 - **Total Line Items** = DISTINCTCOUNT(`Retail Order ID`)
 - **Total Orders** = DISTINCTCOUNT(`Order ID`)
 
-> Tip: If your cards currently show ~5,009 “orders”, that usually indicates they are counting **Retail Order ID (line items)**.  
-> In that case, rename the KPI card label to **Total Line Items** to match the measure.
 
 ---
 
