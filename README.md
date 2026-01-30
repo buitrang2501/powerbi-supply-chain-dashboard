@@ -167,43 +167,15 @@ Screenshot: `assets/forecast_revenue.png`
 
 ## 9) Key Insights (summary)
 
-**Overall performance**
-- Total revenue is **~2.30M** with profit **~286K** (profit margin **~12.47%**) and an overall return rate of **~5.91%**.
-
-**(1) Average delivery time & slowest region**
-- Average delivery time is **~34 days** overall.
-- **Central** is the slowest region (**~35.9 days**), while **West** is the fastest (**~32.0 days**).
-
-**(2) Delivery time vs profitability**
-- Profit margin tends to **decline and become more volatile** as delivery time increases. Faster delivery clusters show higher margins, while long delivery windows (~40–50 days) are associated with lower margins.
-
-**(3) Region with highest return rate**
-- **West** has the highest return rate (**~10.9%**), while other regions are ~3% on average—making West the primary return-risk hotspot.
-
-**(4) Product group with highest return rate & likely drivers**
-- The highest return-rate sub-category is **Machines (~11.5%)**, followed by **Tables (~9.7%)**.
-- Likely drivers (dataset has no explicit “return reason” field): higher product complexity/fragility, shipping damage risk, expectation mismatch, and longer/less reliable delivery for certain lanes. Recommendation: add/collect “return reason” to validate root causes.
-
-**(5) Revenue & profit trends over time**
-- Revenue shows an **upward trend** across 2014–2017 with recurring fluctuations, suggesting both growth and seasonality.
-- Monthly performance varies meaningfully, so monitoring MoM changes is important for short-term planning.
-
-**(6) Top regions by revenue (highest → lowest)**
-- **West (~764.6K)** > **East (~611.7K)** > **Central (~518.8K)** > **South (~402.0K)**
-
-**(7) Products with highest/lowest sales (sub-category level)**
-- Top revenue sub-categories include **Phones, Chairs, Storage, Tables, Binders**.
-- Lowest revenue sub-categories include **Fasteners, Labels, Envelopes**.
-- Pareto insight: the **top ~7 sub-categories generate >80% of revenue**, indicating strong revenue concentration.
-
-**(8) Customer segment contributing most**
-- **Consumer** segment contributes the most revenue (**~1.16M; ~50.56%**), followed by Corporate (~0.71M) and Home Office (~0.43M).
-
-**(9) Seasonality**
-- Sales exhibit repeated peaks and troughs across the timeline, implying seasonal demand cycles. This supports proactive planning for staffing, inventory, and shipping capacity in peak periods.
-
-**(10) Next quarter revenue forecast**
-- Forecast indicates continued growth with uncertainty; expected monthly revenue is around the **mid-50K to mid-60K range**, implying roughly **~170K–190K** for the next quarter (range depends on confidence interval).
+- **Overall performance:** Total revenue ~**2.30M**, total profit ~**286K**, profit margin ~**12.47%**, overall return rate ~**5.91%**.
+- **Delivery performance:** Average delivery time is ~**34 days**. **Central** is the slowest (~**35.9 days**) and **West** is the fastest (~**32.0 days**).
+- **Delivery time vs profitability:** Profitability tends to **decline and become more volatile** as delivery time increases, indicating operational delays can pressure margins.
+- **Returns (hotspots):** **West** has the highest return rate (~**10.9%**), significantly higher than other regions (~3%).
+- **High-return products:** Highest return-rate sub-categories are **Machines (~11.5%)** and **Tables (~9.7%)**.
+- **Revenue concentration by region:** **West (~764.6K)** > **East (~611.7K)** > **Central (~518.8K)** > **South (~402.0K)**.
+- **Product mix:** Revenue is highly concentrated (Pareto pattern). Sub-categories such as **Phones, Chairs, Storage, Tables, and Binders** contribute the majority of sales, while **Fasteners, Labels, and Envelopes** are among the lowest.
+- **Customer segment contribution:** **Consumer** is the largest segment, contributing ~**50.56%** of total revenue.
+- **Seasonality & forecast:** Sales show clear seasonality with recurring peaks/troughs; the next quarter forecast suggests continued growth at roughly **~170K–190K** total (depending on confidence intervals).
 
 ---
 
