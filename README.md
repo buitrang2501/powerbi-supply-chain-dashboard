@@ -168,7 +168,7 @@ Screenshot: `assets/forecast_revenue.png`
 ## 9) Key Insights (summary)
 
 - **Overall performance:** Total revenue ~**2.30M**, total profit ~**286K**, profit margin ~**12.47%**, overall return rate ~**5.91%**.
-- **Delivery performance:** Average delivery time is ~**34 days**. **Central** is the slowest (~**35.9 days**) and **West** is the fastest (~**32.0 days**).
+- **Delivery performance:** Average delivery time is about **34 days**. **Central** is the slowest (**35.9 days**) and **West** is the fastest (**32.0 days**).
 - **Delivery time vs profitability:** Profitability tends to **decline and become more volatile** as delivery time increases, indicating operational delays can pressure margins.
 - **Returns (hotspots):** **West** has the highest return rate (~**10.9%**), significantly higher than other regions (~3%).
 - **High-return products:** Highest return-rate sub-categories are **Machines (~11.5%)** and **Tables (~9.7%)**.
