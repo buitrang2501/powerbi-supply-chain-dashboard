@@ -12,25 +12,20 @@ Interactive Power BI dashboard for **Supply Chain & Sales** analysis (2014–201
 ---
 
 ## 1) Business Context
-Retail businesses must balance **revenue growth** with **supply chain efficiency**. Delivery delays and product returns can reduce profitability through:
-- higher reverse-logistics costs,
-- margin erosion,
-- customer churn risk.
-
-This project analyzes **transaction-level** retail data to uncover:
-- what drives **delivery days** and **returns**,
-- where profit is concentrated (or at risk),
-- how **customer / segment / region / product / sales rep** contribute to performance.
+Supply chain operations directly impact revenue growth and operational efficiency for retail businesses. This project analyzes real-world order, customer, product, and regional sales data to evaluate key metrics like delivery times, return rates, profitability, and sales performance. Interactive Power BI dashboards enable stakeholders to monitor logistics, identify bottlenecks, and drive data-informed strategic decisions.
 
 ---
 
 ## 2) Project Objectives
 Using Power BI, this project delivers:
-- **Sales & profitability** analysis over time (year/quarter/month) and across **regions / products / customer segments**
-- **Delivery performance** monitoring using *Actual delivery days* and delivery buckets
-- **Return-rate analysis** to identify high-risk **regions / products / customer segments / sales reps**
-- **Forecasting** next period revenue using Power BI built-in forecasting (ETS)
-- Actionable **business recommendations** for optimizing operations & improving profitability
+
+- **Revenue & Profit performance** over time (year/quarter/month) and across Region, Product, Segment
+- **Delivery performance monitoring** using Avg Delivery Days, shipping modes, and delivery-time patterns
+- **Return-rate analysis** to identify high-risk Regions and Product groups (and prioritize investigation)
+- **Customer & segment contribution** to revenue and repeat behavior indicators
+- **Seasonality detection** for peak/low periods to guide inventory and logistics planning
+- **Revenue forecasting** (next quarter) using Power BI’s built-in ETS forecasting
+- Translate findings into **actionable recommendations** to improve service level and profitability
 
 ---
 
@@ -87,7 +82,7 @@ Core KPIs used across the report:
 - **Returned Line Items** = COUNT rows where Returned = "Yes"
 - **Return Rate (Line)** = Returned Line Items / Total Line Items
 
-Optional (Order-level) KPIs if enabled:
+Optional (Order-level) KPIs:
 - **Returned Orders** = DISTINCTCOUNT(`Order ID`) where Returned = "Yes"
 - **Return Rate (Order)** = Returned Orders / Total Orders
 
@@ -171,40 +166,63 @@ Screenshot: `assets/forecast_revenue.png`
 ---
 
 ## 9) Key Insights (summary)
-1) **Returns are concentrated, not evenly distributed**  
-Return risk clusters by **sub-category** and **segment**, suggesting targeted interventions outperform broad policies.
 
-2) **Delivery impact is not always linear**  
-Return spikes may occur in specific delivery windows/buckets, indicating expectation mismatch and category/segment interactions.
+**Overall performance**
+- Total revenue is **~2.30M** with profit **~286K** (profit margin **~12.47%**) and an overall return rate of **~5.91%**.
 
-3) **Margin risk exists inside high-revenue areas**  
-Some categories are more sensitive to discounting and returns; prioritizing them yields outsized ROI.
+**(1) Average delivery time & slowest region**
+- Average delivery time is **~34 days** overall.
+- **Central** is the slowest region (**~35.9 days**), while **West** is the fastest (**~32.0 days**).
 
-4) **Volume ≠ risk**  
-High-revenue regions are not always the highest return-risk regions. The dashboard separates:
-- where business impact is high, vs.
-- where margin leakage is high.
+**(2) Delivery time vs profitability**
+- Profit margin tends to **decline and become more volatile** as delivery time increases. Faster delivery clusters show higher margins, while long delivery windows (~40–50 days) are associated with lower margins.
 
-5) **Sales Rep comparison needs a fair baseline**  
-Using “Overall excluding Sales Rep filter” reduces bias due to different mixes (product/region/segment).
+**(3) Region with highest return rate**
+- **West** has the highest return rate (**~10.9%**), while other regions are ~3% on average—making West the primary return-risk hotspot.
+
+**(4) Product group with highest return rate & likely drivers**
+- The highest return-rate sub-category is **Machines (~11.5%)**, followed by **Tables (~9.7%)**.
+- Likely drivers (dataset has no explicit “return reason” field): higher product complexity/fragility, shipping damage risk, expectation mismatch, and longer/less reliable delivery for certain lanes. Recommendation: add/collect “return reason” to validate root causes.
+
+**(5) Revenue & profit trends over time**
+- Revenue shows an **upward trend** across 2014–2017 with recurring fluctuations, suggesting both growth and seasonality.
+- Monthly performance varies meaningfully, so monitoring MoM changes is important for short-term planning.
+
+**(6) Top regions by revenue (highest → lowest)**
+- **West (~764.6K)** > **East (~611.7K)** > **Central (~518.8K)** > **South (~402.0K)**
+
+**(7) Products with highest/lowest sales (sub-category level)**
+- Top revenue sub-categories include **Phones, Chairs, Storage, Tables, Binders**.
+- Lowest revenue sub-categories include **Fasteners, Labels, Envelopes**.
+- Pareto insight: the **top ~7 sub-categories generate >80% of revenue**, indicating strong revenue concentration.
+
+**(8) Customer segment contributing most**
+- **Consumer** segment contributes the most revenue (**~1.16M; ~50.56%**), followed by Corporate (~0.71M) and Home Office (~0.43M).
+
+**(9) Seasonality**
+- Sales exhibit repeated peaks and troughs across the timeline, implying seasonal demand cycles. This supports proactive planning for staffing, inventory, and shipping capacity in peak periods.
+
+**(10) Next quarter revenue forecast**
+- Forecast indicates continued growth with uncertainty; expected monthly revenue is around the **mid-50K to mid-60K range**, implying roughly **~170K–190K** for the next quarter (range depends on confidence interval).
 
 ---
 
 ## 10) Recommendations
 ### Short-term (0–3 months)
-- Implement a **Return Watchlist**: Top sub-categories by `Return Rate × Revenue`
-- Alert thresholds: return rate > baseline + configurable parameter
-- Prioritize operational checks for high-return sub-categories (packaging, product expectation mismatch, QA)
+- Implement a **Return Watchlist**: rank items by `Return Rate × Revenue` (focus first on hotspots such as **West** and high-return sub-categories like **Machines/Tables**).
+- Set **alert thresholds** (e.g., return rate > baseline + configurable parameter; delivery days above the **delivery time target**).
+- Run **operational checks** for high-return buckets: packaging integrity, shipping damage, product expectation mismatch, and QA sampling.
+- Track a “**High Return + Low Margin**” view to prioritize cases that hurt both service quality and profitability.
 
 ### Mid-term (3–6 months)
-- Review pricing/discount policy where margin is fragile
-- Improve delivery reliability for segments/buckets correlated with higher return risk
-- Add a “reason for return” field (if available) to validate root causes
+- Review **pricing/discount policy** where margin is fragile (apply margin guardrails; reassess discounting in low-margin categories).
+- Improve **delivery reliability** for lanes/segments correlated with higher return risk (optimize ship mode, fulfillment process, and set **region-level delivery time targets**).
+- Add a **“reason for return”** field (if available) to validate root causes and quantify the biggest drivers.
 
 ### Next data enhancements
-- Carrier/warehouse + shipment events (actual vs planned)
-- Return reason + product condition + refund/exchange outcome
-- Customer lifetime value to quantify churn risk
+- Add **carrier/warehouse + shipment event logs** (planned vs actual) to explain delivery-day variance.
+- Capture **return reason + product condition + refund/exchange outcome** to distinguish defect vs logistics vs preference returns.
+- Add **customer lifetime value / repeat rate** to quantify churn risk and prioritize retention actions.
 
 ---
 
