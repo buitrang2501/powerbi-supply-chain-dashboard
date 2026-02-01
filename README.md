@@ -167,15 +167,15 @@ Screenshot: `assets/forecast_revenue.png`
 
 ## 9) Key Insights (summary)
 
-- **Overall performance:** Total revenue ~**2.30M**, total profit ~**286K**, profit margin ~**12.47%**, overall return rate ~**5.91%**.
-- **Delivery performance:** Average delivery time is about **34 days**. **Central** is the slowest (**35.9 days**) and **West** is the fastest (**32.0 days**).
+- **Overall performance:** Total revenue ~**2.12M**, total profit ~**263K**, profit margin ~**12.43%**, overall return rate ~**5.91%**.
+- **Delivery performance:** Average delivery time is about **34 days**. **Central** is the slowest (**36.98 days**) and **West** is the fastest (**32.59 days**).
 - **Delivery time vs profitability:** Profitability tends to **decline and become more volatile** as delivery time increases, indicating operational delays can pressure margins.
-- **Returns (hotspots):** **West** has the highest return rate (~**10.9%**), significantly higher than other regions (~3%).
-- **High-return products:** Highest return-rate sub-categories are **Machines (~11.5%)** and **Tables (~9.7%)**.
-- **Revenue concentration by region:** **West (~764.6K)** > **East (~611.7K)** > **Central (~518.8K)** > **South (~402.0K)**.
+- **Returns (hotspots):** **West** has the highest return rate (~**11.73%**), significantly higher than other regions (~3%).
+- **High-return products:** Highest return-rate sub-categories are **Machines (~11.6%)** and **Tables (~9.7%)**.
+- **Revenue concentration by region:** **West (~699.7K)** > **East (~552.9K)** > **Central (~489.5K)** > **South (~374.6K)**.
 - **Product mix:** Revenue is highly concentrated (Pareto pattern). Sub-categories such as **Phones, Chairs, Storage, Tables, and Binders** contribute the majority of sales, while **Fasteners, Labels, and Envelopes** are among the lowest.
-- **Customer segment contribution:** **Consumer** is the largest segment, contributing ~**50.56%** of total revenue.
-- **Seasonality & forecast:** Sales show clear seasonality with recurring peaks/troughs; the next quarter forecast suggests continued growth at roughly **~170K–190K** total (depending on confidence intervals).
+- **Customer segment contribution:** **Consumer** is the largest segment, contributing ~**51.58%** of total revenue.
+- **Seasonality & forecast:** Sales show clear seasonality with recurring peaks/troughs; the next quarter forecast suggests continued growth at roughly **~122K–197K** total (depending on confidence intervals).
 
 ---
 
